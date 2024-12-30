@@ -3,85 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NelsonGPT - Pediatric Knowledge Assistant</title>
+    <title>Nelson-GPT</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#007bff">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        .hero-section {
+            padding: 50px 20px;
+            text-align: center;
             background-color: #f8f9fa;
         }
-        .chat-container {
-            max-width: 800px;
-            margin: 50px auto;
+        .topic-buttons button {
+            margin: 10px 0;
+            text-align: left;
+            width: 100%;
+        }
+        .ask-field {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
             background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            z-index: 10;
         }
-        .chat-header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
+        .ask-field input {
+            width: 85%;
         }
-        .chat-area {
+        .ask-field button {
+            width: 12%;
+        }
+        .iframe-container {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             height: 400px;
-            overflow-y: auto;
-            padding: 15px;
-            background-color: #f1f1f1;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 20;
         }
-        .chat-input-container {
-            display: flex;
-            padding: 10px;
-            border-top: 1px solid #dee2e6;
-            background: #ffffff;
-        }
-        .chat-input {
-            flex: 1;
+        iframe {
+            width: 100%;
+            height: 100%;
             border: none;
-            padding: 10px;
-            border-radius: 4px;
-            background-color: #e9ecef;
-        }
-        .chat-input:focus {
-            outline: none;
-            background-color: #ffffff;
-        }
-        .send-btn {
-            margin-left: 10px;
-            background-color: #007bff;
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <div class="container chat-container">
-        <div class="chat-header">
-            NelsonGPT - Pediatric Knowledge Assistant
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-stethoscope me-2" viewBox="0 0 16 16">
+                    <path d="M4 .5a.5.5 0 0 1 .5.5v2.5a1.5 1.5 0 0 0 3 0V1a.5.5 0 0 1 1 0v2.5a2.5 2.5 0 0 1-5 0V1A.5.5 0 0 1 4 .5z"/>
+                    <path d="M6.5 9.096V5.1h1v3.996c0 .292-.19.57-.459.692A1.003 1.003 0 0 0 8 10.9v1.682a3 3 0 1 0 2 0V10.9a1.003 1.003 0 0 0 .959-.712A.772.772 0 0 0 10.5 9.1V5.1h1v3.996c0 .583-.283 1.145-.765 1.464C9.982 10.973 10 11.487 10 12a4 4 0 1 1-8 0c0-.513.018-1.027.265-1.44a1.772 1.772 0 0 1-.765-1.464V5.1h1v3.996c0 .292-.19.57-.459.692A1.003 1.003 0 0 0 2 10.9v1.682a3 3 0 1 0 2 0V10.9a1.003 1.003 0 0 0 .959-.712.772.772 0 0 0-.459-.692z"/>
+                </svg>
+                Nelson-GPT
+            </a>
         </div>
-        <div class="chat-area" id="chatArea">
-            <!-- Chat messages -->
-        </div>
-        <div class="chat-input-container">
-            <input type="text" class="chat-input" id="chatInput" placeholder="Type your question here...">
-            <button class="btn send-btn" id="sendBtn">Send</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="display-5">Welcome to Nelson-GPT</h1>
+        <p class="lead">Evidence-based pediatric knowledge assistant powered by Nelson Textbook of Pediatrics.</p>
+        <p>Ask questions about symptoms, diagnoses, treatments, development, and preventive care.</p>
+    </div>
+
+    <!-- Interactive Buttons -->
+    <div class="container topic-buttons">
+        <button class="btn btn-light shadow-sm text-start" type="button" onclick="showIframe()">What are the red flags for pediatric fever?</button>
+        <button class="btn btn-light shadow-sm text-start" type="button" onclick="showIframe()">Describe developmental milestones 0-12 months</button>
+        <button class="btn btn-light shadow-sm text-start" type="button" onclick="showIframe()">Common causes of acute abdominal pain in children</button>
+        <button class="btn btn-light shadow-sm text-start" type="button" onclick="showIframe()">Current vaccination schedule recommendations</button>
+    </div>
+
+    <!-- Ask Field -->
+    <div class="ask-field">
+        <div class="d-flex">
+            <input type="text" class="form-control" placeholder="Ask about pediatric conditions, treatments, or growth..." onclick="showIframe()">
+            <button class="btn btn-primary" onclick="showIframe()">Chat</button>
         </div>
     </div>
 
+    <!-- Embedded Chat (Initially Hidden) -->
+    <div class="iframe-container" id="iframeContainer">
+        <iframe 
+            src="https://embed.writer.com/chat/VcOBcHAaoZy8FS3PBe5abAkyY7c_bnOkO_hUfBuskHA">
+        </iframe>
+    </div>
+
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(() => console.log('Service Worker Registered'))
-                .catch(err => console.error('Service Worker Registration Failed:', err));
+        function showIframe() {
+            const iframeContainer = document.getElementById('iframeContainer');
+            iframeContainer.style.display = 'block';
         }
     </script>
 </body>
